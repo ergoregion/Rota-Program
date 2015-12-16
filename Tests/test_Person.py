@@ -19,32 +19,32 @@ class PersonTest(unittest.TestCase):
         self.assertEqual(self.bob.name, 'Bob')
 
     def testPhoneNumber(self):
-        self.bob.phoneNumber = '999'
-        self.assertEqual(self.bob.phoneNumber, '999')
-        self.bob.phoneNumber = '112'
-        self.assertNotEqual(self.bob.phoneNumber, '999')
-        self.assertEqual(self.bob.phoneNumber, '112')
+        self.bob.phone_number = '999'
+        self.assertEqual(self.bob.phone_number, '999')
+        self.bob.phone_number = '112'
+        self.assertNotEqual(self.bob.phone_number, '999')
+        self.assertEqual(self.bob.phone_number, '112')
 
     def testNamePhone(self):
-        self.bob.phoneNumber = '999'
+        self.bob.phone_number = '999'
         self.assertEqual(self.bob.name, 'Bob')
-        self.assertEqual(self.bob.phoneNumber, '999')
+        self.assertEqual(self.bob.phone_number, '999')
         self.bob.name = 'Ben'
-        self.bob.phoneNumber = '112'
+        self.bob.phone_number = '112'
         self.assertNotEqual(self.bob.name, 'Bob')
-        self.assertNotEqual(self.bob.phoneNumber, '999')
+        self.assertNotEqual(self.bob.phone_number, '999')
         self.assertEqual(self.bob.name, 'Ben')
-        self.assertEqual(self.bob.phoneNumber, '112')
+        self.assertEqual(self.bob.phone_number, '112')
 
     def testEmailPhone(self):
-        self.bob.phoneNumber = '999'
+        self.bob.phone_number = '999'
         self.assertEqual(self.bob.email, '')
-        self.assertEqual(self.bob.phoneNumber, '999')
+        self.assertEqual(self.bob.phone_number, '999')
         self.bob.email = 'bob@a.com'
-        self.bob.phoneNumber = '112'
-        self.assertNotEqual(self.bob.phoneNumber, '999')
+        self.bob.phone_number = '112'
+        self.assertNotEqual(self.bob.phone_number, '999')
         self.assertEqual(self.bob.email, 'bob@a.com')
-        self.assertEqual(self.bob.phoneNumber, '112')
+        self.assertEqual(self.bob.phone_number, '112')
 
     def testBlacklistedDates(self):
         test_date_1 = date(2012, 12, 31)
