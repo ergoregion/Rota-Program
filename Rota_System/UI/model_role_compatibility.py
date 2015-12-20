@@ -25,7 +25,7 @@ class RoleCompatibilitiesSettingModel(QtCore.QAbstractTableModel):
     def roles_changed(self):
         self.reset()
         for r in self._allRolesModel.rolelist.roles:
-            r.compatibilitiesChanged.connect(self.roleChanged)
+            r.compatibilitiesChanged.connect(self.role_changed)
 
     @QtCore.pyqtSlot()
     def role_changed(self):
@@ -47,7 +47,7 @@ class RoleCompatibilitiesSettingModel(QtCore.QAbstractTableModel):
             return None
         role1 = self._allRolesModel.rolelist.roles[index.row()]
         role2 = self._allRolesModel.rolelist.roles[index.column()]
-        return role1.compatibleWith(role2)
+        return role1.compatible_with(role2)
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         if not (role == QtCore.Qt.DisplayRole):
@@ -61,7 +61,7 @@ class RoleCompatibilitiesSettingModel(QtCore.QAbstractTableModel):
             return False
         role1 = self._allRolesModel.rolelist.roles[index.row()]
         role2 = self._allRolesModel.rolelist.roles[index.column()]
-        compatible = role1.compatibleWith(role2)
+        compatible = role1.compatible_with(role2)
         command = CommandChangeCompatibilityRole(role1, role2, not compatible)
         self.commandIssued.emit(command)
         return True

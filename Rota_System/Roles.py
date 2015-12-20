@@ -136,7 +136,7 @@ class GlobalRoleListClass(QObject):
         for i in range(len(self.roles) + 1):
             a = str(i)
             try:
-                self.roleFromCode(a)
+                self.role_from_code(a)
             except UndefinedRoleError:
                 return a
 
@@ -167,16 +167,14 @@ class RoleList(QObject):
         self.rolesChanged.emit()
 
     def role_from_code(self, code):
-        stripped_code = code.strip()
-        possibilities = filter((lambda a: a.code == stripped_code), self.roles)
+        possibilities = filter((lambda a: code.contains(a.code)), self.roles)
         if len(possibilities) == 0:
             raise UndefinedRoleError(code)
         else:
             return possibilities.pop()
 
     def role_from_desc(self, desc):
-        desc = desc.strip()
-        possibilities = filter((lambda a: a.description == desc), self.roles)
+        possibilities = filter((lambda a: desc.contains(a.description)), self.roles)
         if len(possibilities) == 0:
             raise UndefinedRoleError(desc)
         else:

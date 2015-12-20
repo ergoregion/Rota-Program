@@ -2,11 +2,13 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import pyqtSignal
+from commands_roles_all import CommandAddRole
+
 
 class AllRolesModel(QtCore.QAbstractListModel):
-    '''
+    """
     used to manipulate The Complete global list of roles
-    '''
+    """
 
     aboutToAddRole = pyqtSignal()
     addRole = pyqtSignal()
@@ -17,7 +19,7 @@ class AllRolesModel(QtCore.QAbstractListModel):
     criticalCommandIssued = pyqtSignal()
 
 
-    def __init__(self,allRolelist):
+    def __init__(self, allRolelist):
         super(QtCore.QAbstractListModel, self).__init__()
         self.rolelist = allRolelist
         allRolelist.rolesChanged.connect(self.reset)
@@ -37,26 +39,26 @@ class AllRolesModel(QtCore.QAbstractListModel):
         if role != QtCore.Qt.DisplayRole:
             return None
 
-        if index.column() == 0 :
+        if index.column() == 0:
             return self.rolelist.roles[index.row()].description
-        else :
+        else:
             return QtCore.QVariant()
 
     def criticalDelete(self):
         return True
 
     def insertRow(self, row,   parent =QtCore.QModelIndex()):
-        command = CommandAddRole(self, row,parent)
+        command = CommandAddRole(self, row, parent)
         self.commandIssued.emit(command)
 
     def object(self, index):
         return self.rolelist.roles[index.row()]
 
-    def removeRow(self, row,   parent =QtCore.QModelIndex()):
+    def removeRow(self, row, parent=QtCore.QModelIndex()):
         role = self.rolelist.roles[row]
         self.aboutToRemoveRole.emit(role.code)
         self.beginRemoveRows(parent, row, row)
-        self.rolelist.removeRole(role)
+        self.rolelist.remove_role(role)
         self.endRemoveRows()
         self.removeRole.emit(role.code)
         self.criticalCommandIssued.emit()
