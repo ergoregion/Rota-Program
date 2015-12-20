@@ -1,9 +1,10 @@
 __author__ = 'Neil Butcher'
 
 from PyQt4 import QtGui, QtCore
-from model_roles_all import AllRolesModel
 from PyQt4.QtCore import pyqtSignal
-from commands_roles_sublist import CommandExcludeRole, CommandIncludeRole
+
+from model_roles_all import AllRolesModel
+from Rota_System.UI.Roles.commands_roles_sublist import CommandExcludeRole, CommandIncludeRole
 
 
 class SelectionOfRolesModel(AllRolesModel):

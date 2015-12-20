@@ -17,7 +17,7 @@ class CommandAddRole(QtGui.QUndoCommand):
         self.model.beginInsertRows(self.parent, self.row, self.row)
         self.model.aboutToAddRole.emit()
         for _ in range(1):
-            self.model.rolelist.addRole(self.role)
+            self.model.rolelist.add_role(self.role)
         self.model.endInsertRows()
         self.model.addRole.emit()
 

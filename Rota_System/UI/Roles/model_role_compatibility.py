@@ -2,7 +2,8 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import pyqtSignal
-from commands_role_compatibility import CommandChangeCompatibilityRole
+
+from Rota_System.UI.Roles.commands_role_compatibility import CommandChangeCompatibilityRole
 
 
 class RoleCompatibilitiesSettingModel(QtCore.QAbstractTableModel):

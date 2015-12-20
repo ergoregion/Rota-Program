@@ -4,7 +4,7 @@ import sys
 
 from PyQt4 import QtCore, QtGui
 
-from commands_role import CommandChangeRole
+from Rota_System.UI.Roles.commands_role import CommandChangeRole
 
 
 class SingleRoleWidget(QtGui.QWidget):

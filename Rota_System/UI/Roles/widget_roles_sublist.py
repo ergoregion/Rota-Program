@@ -2,8 +2,10 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import pyqtSignal
+
 from Rota_System.Roles import Role, GlobalRoleList
-from model_roles_sublist import SelectionOfRolesModel
+from Rota_System.UI.Roles.model_roles_sublist import SelectionOfRolesModel
+
 
 class RoleListWidget(QtGui.QWidget):
 

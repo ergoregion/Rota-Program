@@ -2,7 +2,8 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import pyqtSignal
-from commands_roles_all import CommandAddRole
+
+from Rota_System.UI.Roles.commands_roles_all import CommandAddRole
 
 
 class AllRolesModel(QtCore.QAbstractListModel):
@@ -17,7 +18,6 @@ class AllRolesModel(QtCore.QAbstractListModel):
 
     commandIssued = pyqtSignal(QtGui.QUndoCommand)
     criticalCommandIssued = pyqtSignal()
-
 
     def __init__(self, allRolelist):
         super(QtCore.QAbstractListModel, self).__init__()
@@ -47,7 +47,7 @@ class AllRolesModel(QtCore.QAbstractListModel):
     def criticalDelete(self):
         return True
 
-    def insertRow(self, row,   parent =QtCore.QModelIndex()):
+    def insertRow(self, row, parent =QtCore.QModelIndex()):
         command = CommandAddRole(self, row, parent)
         self.commandIssued.emit(command)
 

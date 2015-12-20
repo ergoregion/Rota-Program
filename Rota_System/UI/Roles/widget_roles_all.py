@@ -1,11 +1,14 @@
 __author__ = 'Neil Butcher'
 
 import sys
+
 from PyQt4 import QtGui, QtCore
-from model_roles_all import AllRolesModel
+
+from Rota_System.UI.Roles.model_roles_all import AllRolesModel
 from model_role_compatibility import RoleCompatibilitiesSettingModel
 from Rota_System.Roles import GlobalRoleList, Role
-from widget_addDel_list import AddDelListWidget
+from Rota_System.UI.widget_addDel_list import AddDelListWidget
+from Rota_System.UI.model_undo import MasterUndoModel
 from widget_role import SingleRoleWidget
 
 
@@ -55,8 +58,11 @@ def main():
     GlobalRoleList.add_role(Role('Steward', 'S', 9))
     GlobalRoleList.add_role(Role('Fisherman', 'F', 7))
 
+    m = MasterUndoModel()
+
     app = QtGui.QApplication(sys.argv)
     w = GlobalRolesWidget(None)
+    m.add_command_contributer(w)
     w.setWindowTitle('roles')
     w.show()
 

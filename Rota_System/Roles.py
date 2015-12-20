@@ -181,8 +181,8 @@ class RoleList(QObject):
             return possibilities.pop()
 
     def includes(self, role_or_code):
-        if role_or_code in self.roles:
-            return True
+        if role_or_code in GlobalRoleList.roles:
+            return role_or_code in self.roles
         try:
             self.role_from_code(role_or_code)
         except UndefinedRoleError:
