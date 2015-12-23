@@ -15,7 +15,7 @@ class SelectionOfRolesModel(AllRolesModel):
     commandIssued = pyqtSignal(QtGui.QUndoCommand)
 
     def __init__(self, all_roles_list, rolelist):
-        AllRolesModel.__init__(all_roles_list)
+        AllRolesModel.__init__(self, all_roles_list)
         self.roleListSelection = rolelist
         rolelist.rolesChanged.connect(self.roles_changed)
 

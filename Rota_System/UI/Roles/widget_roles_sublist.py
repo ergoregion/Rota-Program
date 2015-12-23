@@ -14,7 +14,7 @@ class RoleListWidget(QtGui.QWidget):
     def __init__(self, parent):
         QtGui.QWidget.__init__(self, parent)
         self.layout = QtGui.QHBoxLayout(self)
-        self.roles = QtGui.QListBox(self)
+        self.roles = QtGui.QListView(self)
         self.layout.addWidget(self.roles)
         self.roles.clicked.connect(self.role_clicked)
 
