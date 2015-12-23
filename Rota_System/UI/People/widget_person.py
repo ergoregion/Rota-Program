@@ -2,12 +2,8 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import pyqtSignal
-from Rota_System.Worker import Worker
-from datetime import date
-import sys
 from commands_person import CommandChangePerson, CommandChangePersonBlacklist
 from Rota_System.UI.Roles import RoleListWidget
-from Rota_System.Roles import Role, GlobalRoleList
 
 
 class PersonWidget(QtGui.QWidget):
@@ -17,31 +13,31 @@ class PersonWidget(QtGui.QWidget):
     def __init__(self, parent):
         QtGui.QWidget.__init__(self, parent)
         uic.loadUi('PersonWidget.ui', self)
-        self.roleListWidget = RoleListWidget(self)
-        self.roleListStackedWidget.addWidget(self.roleListWidget)
+        self.role_list_widget = RoleListWidget(self)
+        self.roleListStackedWidget.addWidget(self.role_list_widget)
         self._person = None
-        self._roleListModel = None
+        self._role_list_model = None
 
     @QtCore.pyqtSlot(QtCore.QObject)
     def person(self, person):
-        if self._roleListModel:
-            self._roleListModel.commandIssued.disconnect(self.emitCommand)
+        if self._role_list_model:
+            self._role_list_model.commandIssued.disconnect(self.emitCommand)
         if self._person:
             self._person.dataChanged.disconnect(self.update)
         self._person = person
         person.dataChanged.connect(self.update)
-        self._roleListModel = self.roleListWidget.roleList(person._roles)
-        self._roleListModel.commandIssued.connect(self.emitCommand)
+        self._role_list_model = self.role_list_widget.roleList(person._roles)
+        self._role_list_model.commandIssued.connect(self.emitCommand)
         self.update()
 
     @QtCore.pyqtSlot()
     def update(self):
         self.nameBox.setText(self._person.name)
         self.emailBox.setText(self._person.email)
-        self.phoneBox.setText(self._person.phoneNumber)
-        self._refreshDates()
+        self.phoneBox.setText(self._person.phone_number)
+        self._refresh_dates()
 
-    def _refreshDates(self):
+    def _refresh_dates(self):
         self.blacklistedDates.clear()
         for date in self._person.blacklisted_dates():
             self._addBlacklistDateItem(date)
@@ -69,7 +65,7 @@ class PersonWidget(QtGui.QWidget):
     @QtCore.pyqtSlot()
     def phoneEntered(self):
         string = self.phoneBox.text()
-        if not string == self._person.phoneNumber:
+        if not string == self._person.phone_number:
             command = CommandChangePerson(self._person, 'phone', str(string))
             self.commandIssued.emit(command)
 
@@ -88,6 +84,11 @@ class PersonWidget(QtGui.QWidget):
     @QtCore.pyqtSlot(QtGui.QUndoCommand)
     def emitCommand(self, command):
         self.commandIssued.emit(command)
+
+from Rota_System.Roles import Role, GlobalRoleList
+from Rota_System.Worker import Worker
+from datetime import date
+import sys
 
 
 def main():

@@ -10,13 +10,13 @@ class CommandChangePerson(QtGui.QUndoCommand):
         self.key = key
         self.value = value
         if key == 'name':
-            self.startingValue = person.name
+            self.starting_value = person.name
         elif key == 'email':
-            self.startingValue = person.email
+            self.starting_value = person.email
         elif key == 'address':
-            self.startingValue = person.address
+            self.starting_value = person.address
         elif key == 'phone':
-            self.startingValue = person.phoneNumber
+            self.starting_value = person.phone_number
 
     def redo(self):
         if self.key == 'name':
@@ -26,17 +26,17 @@ class CommandChangePerson(QtGui.QUndoCommand):
         elif self.key == 'address':
             self.person.address = self.value
         elif self.key == 'phone':
-            self.person.phoneNumber = self.value
+            self.person.phone_number = self.value
 
     def undo(self):
         if self.key == 'name':
-            self.person.name = self.startingValue
+            self.person.name = self.starting_value
         elif self.key == 'email':
-            self.person.email = self.startingValue
+            self.person.email = self.starting_value
         elif self.key == 'address':
-            self.person.address = self.startingValue
+            self.person.address = self.starting_value
         elif self.key == 'phone':
-            self.person.phoneNumber = self.startingValue
+            self.person.phone_number = self.starting_value
 
 
 class CommandChangePersonBlacklist(QtGui.QUndoCommand):
@@ -49,12 +49,12 @@ class CommandChangePersonBlacklist(QtGui.QUndoCommand):
 
     def redo(self):
         if self.blacklist_bool:
-            self.person.blacklistDate(self.date)
+            self.person.blacklist_date(self.date)
         else:
-            self.person.freeDate(self.date)
+            self.person.free_date(self.date)
 
     def undo(self):
         if self.blacklist_bool:
-            self.person.freeDate(self.date)
+            self.person.free_date(self.date)
         else:
-            self.person.blacklistDate(self.date)
+            self.person.blacklist_date(self.date)
