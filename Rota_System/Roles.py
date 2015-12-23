@@ -167,14 +167,14 @@ class RoleList(QObject):
         self.rolesChanged.emit()
 
     def role_from_code(self, code):
-        possibilities = filter((lambda a: code.contains(a.code)), self.roles)
+        possibilities = filter((lambda a: a.code in code), self.roles)
         if len(possibilities) == 0:
             raise UndefinedRoleError(code)
         else:
             return possibilities.pop()
 
     def role_from_desc(self, desc):
-        possibilities = filter((lambda a: desc.contains(a.description)), self.roles)
+        possibilities = filter((lambda a: a.description in desc), self.roles)
         if len(possibilities) == 0:
             raise UndefinedRoleError(desc)
         else:
