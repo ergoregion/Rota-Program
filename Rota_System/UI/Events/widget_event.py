@@ -22,7 +22,6 @@ class EventWidget(QtGui.QWidget):
         self.appointment_widget.commandIssued.connect(self.emitCommand)
         self.appointment_widget.criticalCommandIssued.connect(self.emitCriticalCommand)
 
-
     @QtCore.pyqtSlot(QtCore.QObject)
     def setEvent(self, item):
         self.core_widget.setEvent(item)
@@ -37,7 +36,6 @@ class EventWidget(QtGui.QWidget):
         self.criticalCommandIssued.emit()
 
 
-
 import sys
 from Rota_System.Roles import Role, GlobalRoleList
 from Rota_System import Events
@@ -46,7 +44,7 @@ from Rota_System.UI.model_undo import MasterUndoModel
 
 def main():
     GlobalRoleList.add_role(Role('Baker', 'B', 2))
-    GlobalRoleList.add_role(Role('Steward', 'S', 9))
+    GlobalRoleList.add_role(Role('Singer', 'S', 9))
     GlobalRoleList.add_role(Role('Fisherman', 'F', 7))
 
     m = MasterUndoModel()
@@ -58,6 +56,10 @@ def main():
     w.setEvent(e)
     m.add_command_contributer(w)
     w.show()
+
+    v = QtGui.QUndoView(None)
+    v.setStack(m.undoStack)
+    v.show()
 
     sys.exit(app.exec_())
 

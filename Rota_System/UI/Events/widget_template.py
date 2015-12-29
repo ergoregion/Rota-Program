@@ -22,7 +22,6 @@ class EventTemplateWidget(QtGui.QWidget):
         self.appointment_widget.commandIssued.connect(self.emitCommand)
         self.appointment_widget.criticalCommandIssued.connect(self.emitCriticalCommand)
 
-
     @QtCore.pyqtSlot(QtCore.QObject)
     def setEvent(self, item):
         self.core_widget.setEvent(item)
