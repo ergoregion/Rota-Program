@@ -26,6 +26,11 @@ class EventsTemplatesModel(QtCore.QAbstractListModel):
         template = self.templates[index.row()]
         return QtCore.QVariant(template.name)
 
+    def headerData(self, section, orientation, role):
+        if role != QtCore.Qt.DisplayRole:
+            return None
+        return None
+
     def object(self, index):
         return self.templates[index.row()]
 

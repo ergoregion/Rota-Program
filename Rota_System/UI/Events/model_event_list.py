@@ -88,7 +88,16 @@ class EventsModel(QtCore.QAbstractTableModel):
             return Event(parent=self.duration)
 
     def headerData(self, section, orientation, role):
-        return None
+        if role != QtCore.Qt.DisplayRole:
+            return None
+        if orientation != QtCore.Qt.Horizontal:
+            return None
+        if section == 0:
+            return QtCore.QVariant("")
+        elif section == 1:
+            return QtCore.QVariant("Date")
+        else:
+            return QtCore.QVariant()
 
     @QtCore.pyqtSlot(QtCore.QObject)
     def _eventChanged(self, event):
