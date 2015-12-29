@@ -112,7 +112,7 @@ class EventPrototype(EventAbstract):
 class Event(EventAbstract):
     def __init__(self, parent):
         EventAbstract.__init__(self, parent)
-        self._datetime = None
+        self._datetime = datetime(2000,1,1,0,0,0)
 
     @property
     def name(self):
