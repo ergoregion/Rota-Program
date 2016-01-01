@@ -2,7 +2,7 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtGui, QtCore
 import widget_core
-from Rota_System.UI.Appointments.widget_appointment_list import AppointmentsListWidget
+from Rota_System.UI.Appointments import AppointmentsListWidget
 
 
 class EventWidget(QtGui.QWidget):
