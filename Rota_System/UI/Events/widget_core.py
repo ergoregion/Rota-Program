@@ -2,6 +2,7 @@ __author__ = 'Neil Butcher'
 
 from PyQt4 import QtGui, QtCore, uic
 from command_event import CommandChangeEvent
+import os
 
 
 class AbstractEventWidget(QtGui.QWidget):
@@ -66,7 +67,8 @@ class AbstractEventWidget(QtGui.QWidget):
 class EventTemplateWidget(AbstractEventWidget):
     def __init__(self, parent=None):
         AbstractEventWidget.__init__(self, parent)
-        uic.loadUi('EventTemplateWidget.ui', self)
+        fn = os.path.join(os.path.dirname(__file__),'EventTemplateWidget.ui')
+        uic.loadUi(fn, self)
 
 
     def refresh(self):
@@ -86,7 +88,8 @@ class EventTemplateWidget(AbstractEventWidget):
 class EventWidget(AbstractEventWidget):
     def __init__(self, parent=None):
         AbstractEventWidget.__init__(self, parent)
-        uic.loadUi('EventWidget.ui', self)
+        fn = os.path.join(os.path.dirname(__file__),'EventWidget.ui')
+        uic.loadUi(fn, self)
 
     def refresh(self):
         AbstractEventWidget.refresh(self)

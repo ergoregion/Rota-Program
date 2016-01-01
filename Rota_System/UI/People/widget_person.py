@@ -1,5 +1,6 @@
 __author__ = 'Neil Butcher'
 
+import os
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import pyqtSignal
 from commands_person import CommandChangePerson, CommandChangePersonBlacklist
@@ -12,7 +13,8 @@ class PersonWidget(QtGui.QWidget):
 
     def __init__(self, parent):
         QtGui.QWidget.__init__(self, parent)
-        uic.loadUi('PersonWidget.ui', self)
+        fn = os.path.join(os.path.dirname(__file__),'PersonWidget.ui')
+        uic.loadUi(fn, self)
         self.role_list_widget = RoleListWidget(self)
         self.roleListStackedWidget.addWidget(self.role_list_widget)
         self._person = None

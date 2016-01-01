@@ -3,6 +3,7 @@ __author__ = 'Neil Butcher'
 from PyQt4 import QtCore, QtGui, uic
 from commands_appointment import CommandAppointmentDisable, CommandAppointmentNote, CommandAppointVacate
 from Rota_System.StandardTimes import date_string
+import os
 
 
 class SingleAppointmentWidget(QtGui.QWidget):
@@ -11,7 +12,8 @@ class SingleAppointmentWidget(QtGui.QWidget):
 
     def __init__(self, parent):
         QtGui.QWidget.__init__(self, parent)
-        uic.loadUi('AppointmentWidget.ui', self)
+        fn = os.path.join(os.path.dirname(__file__),'AppointmentWidget.ui')
+        uic.loadUi(fn, self)
         self._appointment = None
 
     @QtCore.pyqtSlot(QtCore.QObject)
