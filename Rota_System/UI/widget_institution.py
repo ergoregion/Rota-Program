@@ -47,14 +47,15 @@ class InstitutionCoreWidget(QtGui.QWidget):
     def emitCriticalCommand(self):
         self.criticalCommandIssued.emit()
 
-    def _add_command_contributer(self, otherModel):
-        otherModel.commandIssued.connect(self.emitCommand)
-        otherModel.criticalCommandIssued.connect(self.emitCriticalCommand)
+    def _add_command_contributer(self, other_model):
+        other_model.commandIssued.connect(self.emitCommand)
+        other_model.criticalCommandIssued.connect(self.emitCriticalCommand)
 
 import sys
 from Rota_System.Roles import GlobalRoleList, Role
 from model_undo import MasterUndoModel
 from Rota_System.Institution import Institution
+
 
 def main():
     GlobalRoleList.add_role(Role('Baker', 'B', 2))
