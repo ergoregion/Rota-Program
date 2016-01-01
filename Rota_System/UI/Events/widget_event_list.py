@@ -4,6 +4,7 @@ from PyQt4 import QtGui, QtCore
 import widget_event
 from model_event_list import EventsModel
 from Rota_System.UI.widget_addDel_table import AddDelTableWidget
+from Rota_System.UI.delegates import DateDelegate
 
 
 class EventWidget(QtGui.QWidget):
@@ -16,6 +17,8 @@ class EventWidget(QtGui.QWidget):
         self.list_widget = AddDelTableWidget(self)
         self.layout.addWidget(self.list_widget)
         self.list_widget.objectSelected.connect(self.setEvent)
+
+        self.list_widget.setItemDelegateForColumn(1, DateDelegate(self))
 
         self.event_widget = widget_event.EventWidget(self)
         self.layout.addWidget(self.event_widget)
