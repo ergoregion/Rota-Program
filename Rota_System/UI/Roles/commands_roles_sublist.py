@@ -10,10 +10,10 @@ class CommandIncludeRole(QtGui.QUndoCommand):
         self._role = role
 
     def redo(self):
-        self.role_list_selection.addFromCode(self._role.code)
+        self.role_list_selection.add_code(self._role.code)
 
     def undo(self):
-        self.role_list_selection.removeFromCode(self._role.code)
+        self.role_list_selection.remove_code(self._role.code)
 
 
 class CommandExcludeRole(QtGui.QUndoCommand):
@@ -23,7 +23,7 @@ class CommandExcludeRole(QtGui.QUndoCommand):
         self._role = role
 
     def undo(self):
-        self.role_list_selection.addFromCode(self._role.code)
+        self.role_list_selection.add_code(self._role.code)
 
     def redo(self):
-        self.role_list_selection.removeFromCode(self._role.code)
+        self.role_list_selection.remove_code(self._role.code)
