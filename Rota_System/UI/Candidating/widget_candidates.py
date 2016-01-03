@@ -61,15 +61,15 @@ class CandidatesWidget(QtGui.QWidget):
             available_filter = Filters.PersonFilterAvailableForAppointment(self._appointment)
             otherwise_occupied_filter = Filters.PersonFilterHasClashingAppointmentInEvent(self._appointment)
 
-        self._qualifiedModel.clearFilters()
-        self._qualifiedModel.addFilter(qualified_filter)
-        self._qualifiedModel.addFilter(available_filter)
-        self._qualifiedModel.addFilter(otherwise_occupied_filter)
+        self._qualifiedModel.clear_filters()
+        self._qualifiedModel.add_filter(qualified_filter)
+        self._qualifiedModel.add_filter(available_filter)
+        self._qualifiedModel.add_filter(otherwise_occupied_filter)
 
-        self._availableModel.clearFilters()
-        self._availableModel.addFilter(qualified_filter)
-        self._availableModel.addFilter(available_filter)
-        self._availableModel.addReversedFilter(otherwise_occupied_filter)
+        self._availableModel.clear_filters()
+        self._availableModel.add_filter(qualified_filter)
+        self._availableModel.add_filter(available_filter)
+        self._availableModel.add_reversed_filter(otherwise_occupied_filter)
 
     def populationModel(self, population_model):
         self._availableModel.setSourceModel(population_model)
