@@ -15,30 +15,28 @@ class VacanciesWidget(QtGui.QWidget):
 
     def __init__(self, parent):
         QtGui.QWidget.__init__(self, parent)
-        self.layout = QtGui.QHBoxLayout(self)
+        self.layout = QtGui.QGridLayout(self)
         self.treeWidget = AppointmentsTreeListWidget(self)
         self.treeWidget.showCheckBoxes = True
-        self.layout.addWidget(self.treeWidget)
+        self.layout.addWidget(self.treeWidget, 0, 0, 5, 1)
 
         self.appointmentWidget = SingleAppointmentWidget(self)
         self.appointmentWidget.setFixedHeight(170)
         self.appointmentWidget.setFixedWidth(280)
         self.appointmentWidget.commandIssued.connect(self.commandIssued)
-        self._midLayout = QtGui.QVBoxLayout(self)
-        self._midLayout.addWidget(self.appointmentWidget)
+        self.layout.addWidget(self.appointmentWidget, 0, 1, 1, 1)
         self._vacantCandidatesText = QtGui.QLabel('0 appointments are vacant')
-        self._midLayout.addWidget(self._vacantCandidatesText)
+        self.layout.addWidget(self._vacantCandidatesText, 1, 1, 1, 1)
         self._selectedCandidatesText = QtGui.QLabel('0 appointments are selected')
-        self._midLayout.addWidget(self._selectedCandidatesText)
+        self.layout.addWidget(self._selectedCandidatesText, 2, 1, 1, 1)
         self._vacantSelectedText = QtGui.QLabel('0 appointments are vacant and selected')
-        self._midLayout.addWidget(self._vacantSelectedText)
+        self.layout.addWidget(self._vacantSelectedText, 3, 1, 1, 1)
         self._fillButton = QtGui.QPushButton('Fill these appointments')
         self._fillButton.clicked.connect(self.autofill)
-        self._midLayout.addWidget(self._fillButton)
-        self.layout.addLayout(self._midLayout)
+        self.layout.addWidget(self._fillButton, 4, 1, 1, 1)
 
         self.candidatesWidget = CandidatesWidget(self)
-        self.layout.addWidget(self.candidatesWidget)
+        self.layout.addWidget(self.candidatesWidget, 0, 2, 5, 1)
 
         self.treeWidget.appointmentSelected.connect(self.appointmentWidget.appointment)
         self.treeWidget.appointmentSelected.connect(self.candidatesWidget.appointment)
@@ -54,14 +52,14 @@ class VacanciesWidget(QtGui.QWidget):
         self.candidatesWidget.populationModel(populationModel)
 
     @QtCore.pyqtSlot(int, int)
-    def _updateSelectedAppointmentsText(self, numberOFSelectedItems, numberOfSelectedVacantItems):
-        self._selectedCandidatesText.setText(str(numberOFSelectedItems) + ' appointments are selected')
-        self._vacantSelectedText.setText(str(numberOfSelectedVacantItems) + ' appointments are selected and vacant')
+    def _updateSelectedAppointmentsText(self, n_selected_items, n_selected_vacant_items):
+        self._selectedCandidatesText.setText(str(n_selected_items) + ' appointments are selected')
+        self._vacantSelectedText.setText(str(n_selected_vacant_items) + ' appointments are selected and vacant')
 
     @QtCore.pyqtSlot(int, int)
-    def _updateVacantAppointmentsText(self, numberOFVacantItems, numberOfSelectedVacantItems):
-        self._vacantCandidatesText.setText(str(numberOFVacantItems) + ' appointments are vacant')
-        self._vacantSelectedText.setText(str(numberOfSelectedVacantItems) + ' appointments are selected and vacant')
+    def _updateVacantAppointmentsText(self, n_vacant_items, n_selected_vacant_items):
+        self._vacantCandidatesText.setText(str(n_vacant_items) + ' appointments are vacant')
+        self._vacantSelectedText.setText(str(n_selected_vacant_items) + ' appointments are selected and vacant')
 
     @QtCore.pyqtSlot()
     def autofill(self):
@@ -70,7 +68,6 @@ class VacanciesWidget(QtGui.QWidget):
         all_appointments = self.treeWidget.appointments()
 
         autoFill(all_appointments, appointments_to_fill, people)
-
 
 
 import sys

@@ -11,32 +11,28 @@ class CandidatesWidget(QtGui.QWidget):
     def __init__(self, parent):
         QtGui.QWidget.__init__(self, parent)
         self._appointment = None
-        self.layout = QtGui.QHBoxLayout(self)
-        self._availableLayout = QtGui.QVBoxLayout(self)
-        self._qualifiedLayout = QtGui.QVBoxLayout(self)
-        self.layout.addLayout(self._availableLayout)
-        self.layout.addLayout(self._qualifiedLayout)
+        self.layout = QtGui.QGridLayout(self)
 
-        self._availableLayout.addWidget(QtGui.QLabel('Candidates'))
+        self.layout.addWidget(QtGui.QLabel('Candidates'), 0, 0, 1, 1)
         self._availableWidget = QtGui.QListView(self)
         self._availableModel = PopulationSortFilterModel(self._availableWidget)
         self._availableWidget.setModel(self._availableModel)
-        self._availableLayout.addWidget(self._availableWidget)
+        self.layout.addWidget(self._availableWidget, 1, 0, 2, 1)
 
-        self._availableWidget.clicked.connect(self._availableListClicked)
+        self._availableWidget.clicked.connect(self._available_list_clicked)
 
-        self._qualifiedLayout.addWidget(QtGui.QLabel('Otherwise Occupied'))
+        self.layout.addWidget(QtGui.QLabel('Otherwise Occupied'), 0, 1, 1, 1)
         self._qualifiedWidget = QtGui.QListView(self)
         self._qualifiedWidget.setEnabled(False)
         self._qualifiedModel = PopulationSortFilterModel(self._qualifiedWidget)
         self._qualifiedWidget.setModel(self._qualifiedModel)
-        self._qualifiedLayout.addWidget(self._qualifiedWidget)
+        self.layout.addWidget(self._qualifiedWidget, 1, 1, 1, 1)
 
         self._forceButton = QtGui.QPushButton('Force', self)
-        self._forceButton.clicked.connect(self._forceButtonPushed)
-        self._qualifiedLayout.addWidget(self._forceButton)
+        self._forceButton.clicked.connect(self._force_button_pushed)
+        self.layout.addWidget(self._forceButton, 2, 1, 1, 1)
 
-        self._qualifiedWidget.clicked.connect(self._qualifiedListClicked)
+        self._qualifiedWidget.clicked.connect(self._qualified_list_clicked)
 
     @QtCore.pyqtSlot(QtCore.QObject)
     def appointment(self, appointment):
@@ -79,19 +75,19 @@ class CandidatesWidget(QtGui.QWidget):
         return self._availableModel.sourceModel().population
 
     @QtCore.pyqtSlot(QtCore.QModelIndex)
-    def _availableListClicked(self, index):
+    def _available_list_clicked(self, index):
         person = self._availableModel.object(index)
         self.candidateSelected.emit(person)
         self._qualifiedWidget.setEnabled(False)
 
     @QtCore.pyqtSlot(QtCore.QModelIndex)
-    def _qualifiedListClicked(self, index):
+    def _qualified_list_clicked(self, index):
         person = self._qualifiedModel.object(index)
         self.candidateSelected.emit(person)
         self._qualifiedWidget.setEnabled(False)
 
     @QtCore.pyqtSlot()
-    def _forceButtonPushed(self):
+    def _force_button_pushed(self):
         self._qualifiedWidget.setEnabled(True)
         timeout_timer = QtCore.QTimer()
         timeout_timer.singleShot(8000, self._force_button_timeout)
