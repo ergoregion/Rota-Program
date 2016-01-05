@@ -63,8 +63,9 @@ class SingleAppointmentWidget(QtGui.QWidget):
     @QtCore.pyqtSlot(bool)
     def disableAppointment(self, disable):
         if self._appointment:
-            command = CommandAppointmentDisable(self._appointment, disable)
-            self.commandIssued.emit(command)
+            if self._appointment.disabled is not disable:
+                command = CommandAppointmentDisable(self._appointment, disable)
+                self.commandIssued.emit(command)
 
     @QtCore.pyqtSlot(QtCore.QObject)
     def appoint(self, person):
