@@ -18,8 +18,8 @@ class AvailabilitySelectionWidget(QtGui.QWidget):
         self.layout.addWidget(self.table_widget)
         self._model = None
 
-    def set_models(self, population_model, event_model):
-        new_model = AvailabilityModel(population_model, event_model)
+    def set_models(self, event_model, population_model):
+        new_model = AvailabilityModel(event_model, population_model)
         self._set_model(new_model)
 
     def _set_model(self, new_model):
