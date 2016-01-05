@@ -7,7 +7,7 @@ from sets import Set
 
 
 def is_vacant(appointment):
-    return (not appointment.isFilled()) and (not appointment.disabled)
+    return (not appointment.is_filled()) and (not appointment.disabled)
 
 
 class _AppointmentsTreeRefreshCollectionObject(QtCore.QObject):
