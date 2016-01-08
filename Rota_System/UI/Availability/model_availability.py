@@ -21,28 +21,34 @@ class AvailabilityModel(QtCore.QAbstractTableModel):
 
     def _set_models(self, event_model, population_model):
         self._event_model = event_model
-        self._event_model.dataChanged.connect(self.reset)
+        self._event_model.dataChanged.connect(self.refresh)
         for e in self._event_model.events:
-            e.timeChanged.connect(self.reset)
+            e.timeChanged.connect(self.refresh)
+            e.dateChanged.connect(self.refresh)
         self._population_model = population_model
-        self._population_model.dataChanged.connect(self.reset)
+        self._population_model.dataChanged.connect(self.refresh)
         for p in self._population_model.population:
-            p.nameChanged.connect(self.reset)
+            p.nameChanged.connect(self.refresh)
             p.dataChanged.connect(self._person_data_changed)
 
     def dates(self):
         return sorted(set(map(date, self._event_model.events)))
 
     def people(self):
-        return sorted(self._population_model.population, key=name)
+        return self._population_model.population
+
+    def refresh(self):
+        self.reset()
 
     def headerData(self, section, orientation, role):
 
         if role == QtCore.Qt.DisplayRole:
             if orientation == QtCore.Qt.Horizontal:
-                return self.people()[section].name
+                if len(self.people()) > 0:
+                    return self.people()[section].name
             elif orientation == QtCore.Qt.Vertical:
-                return date_string(self.dates()[section])
+                if len(self.dates()) > 0:
+                    return date_string(self.dates()[section])
 
     def data(self, index, role):
         if role == QtCore.Qt.DisplayRole:

@@ -17,7 +17,7 @@ class AppointmentsTableModel(QtCore.QAbstractTableModel):
     def __init__(self, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.event = None
-        self.currentRole = GlobalRoleList.roles[0]
+        self.currentRole = None
         GlobalRoleList.rolesChanged.connect(self._refreshCurrentRole)
         self.show_all_roles = True
 

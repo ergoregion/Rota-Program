@@ -23,11 +23,11 @@ class AvailabilitySelectionWidget(QtGui.QWidget):
         self._set_model(new_model)
 
     def _set_model(self, new_model):
-        self.table_widget.setModel(new_model)
-        self.table_widget.clicked.connect(self._availability_change)
         if self._model:
             self.table_widget.clicked.disconnect(self._availability_change)
             self._model.deleteLater()
+        self.table_widget.setModel(new_model)
+        self.table_widget.clicked.connect(self._availability_change)
         self._model = new_model
 
     @QtCore.pyqtSlot(QtCore.QModelIndex)

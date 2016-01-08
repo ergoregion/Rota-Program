@@ -25,6 +25,6 @@ class CommandAddRole(QtGui.QUndoCommand):
         self.model.aboutToRemoveRole.emit(self.role.code)
         self.model.beginRemoveRows(self.parent, self.row, self.row)
         for _ in range(1):
-            self.model.rolelist.removeRole(self.role)
+            self.model.rolelist.remove_role(self.role)
         self.model.endRemoveRows()
         self.model.removeRole.emit(self.role.code)
