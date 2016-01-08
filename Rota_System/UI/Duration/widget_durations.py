@@ -3,6 +3,7 @@ __author__ = 'Neil Butcher'
 from PyQt4 import QtCore, QtGui
 from widget_duration import SingleDurationWidget
 from Rota_System.UI.widget_addDel_combo import AddDelComboWidget
+from model_durations import DurationsModel
 
 
 class DurationsWidget(QtGui.QWidget):
@@ -24,7 +25,11 @@ class DurationsWidget(QtGui.QWidget):
     def setPopulationModel(self, model):
         self.singleDurationWidget.setPopulationModel(model)
 
-    def setModel(self, model):
+    def setInstitution(self, institution):
+        m = DurationsModel(institution)
+        self._set_model(m)
+
+    def _set_model(self, model):
         self.comboWidget.setModel(model)
         if len(model.durations) > 0:
             self.singleDurationWidget.setDuration(model.durations[0])
@@ -48,7 +53,6 @@ class DurationsWidget(QtGui.QWidget):
 import sys
 from Rota_System.Roles import Role, GlobalRoleList
 from Rota_System.Institution import Institution
-from model_durations import DurationsModel
 from Rota_System.UI.model_undo import MasterUndoModel
 from Rota_System.UI.People.model_population import PopulationModel
 
@@ -61,12 +65,11 @@ def main():
     m = MasterUndoModel()
     i = Institution(None)
     p = PopulationModel(i)
-    d = DurationsModel(i)
 
     app = QtGui.QApplication(sys.argv)
     w = DurationsWidget(None)
     w.setPopulationModel(p)
-    w.setModel(d)
+    w.setInstitution(i)
 
     m.add_command_contributer(w)
     w.show()
