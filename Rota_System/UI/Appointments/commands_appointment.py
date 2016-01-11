@@ -13,7 +13,7 @@ class CommandAppointVacate(QtGui.QUndoCommand):
         self.appointment = appointment
         self.person = person
         # use person = None to vacate
-        self.preAppointed = self.appointment.isFilled()
+        self.preAppointed = self.appointment.is_filled()
         if self.preAppointed:
             self.oldPerson = self.appointment.person
 

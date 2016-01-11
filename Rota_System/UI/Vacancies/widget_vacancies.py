@@ -23,7 +23,7 @@ class VacanciesWidget(QtGui.QWidget):
         self.appointmentWidget = SingleAppointmentWidget(self)
         self.appointmentWidget.setFixedHeight(170)
         self.appointmentWidget.setFixedWidth(280)
-        self.appointmentWidget.commandIssued.connect(self.commandIssued)
+        self.appointmentWidget.commandIssued.connect(self.emitCommand)
         self.layout.addWidget(self.appointmentWidget, 0, 1, 1, 1)
         self._vacantCandidatesText = QtGui.QLabel('0 appointments are vacant')
         self.layout.addWidget(self._vacantCandidatesText, 1, 1, 1, 1)
@@ -69,6 +69,10 @@ class VacanciesWidget(QtGui.QWidget):
 
         autoFill(all_appointments, appointments_to_fill, people)
 
+
+    @QtCore.pyqtSlot(QtGui.QUndoCommand)
+    def emitCommand(self, command):
+        self.commandIssued.emit(command)
 
 import sys
 from Rota_System.Roles import Role, GlobalRoleList

@@ -22,11 +22,15 @@ class AvailabilityModel(QtCore.QAbstractTableModel):
     def _set_models(self, event_model, population_model):
         self._event_model = event_model
         self._event_model.dataChanged.connect(self.refresh)
+        self._event_model.rowsInserted.connect(self.refresh)
+        self._event_model.rowsRemoved.connect(self.refresh)
         for e in self._event_model.events:
             e.timeChanged.connect(self.refresh)
             e.dateChanged.connect(self.refresh)
         self._population_model = population_model
         self._population_model.dataChanged.connect(self.refresh)
+        self._population_model.rowsInserted.connect(self.refresh)
+        self._population_model.rowsRemoved.connect(self.refresh)
         for p in self._population_model.population:
             p.nameChanged.connect(self.refresh)
             p.dataChanged.connect(self._person_data_changed)

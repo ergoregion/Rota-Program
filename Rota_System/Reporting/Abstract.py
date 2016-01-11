@@ -16,7 +16,7 @@ def role(an_object):
 
 
 def person_name(an_object):
-    if an_object.isFilled():
+    if an_object.is_filled():
         return an_object.person.name
     else:
         return 'Not filled'
