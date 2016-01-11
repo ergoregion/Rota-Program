@@ -4,6 +4,7 @@ from PyQt4 import QtCore, QtGui
 from Rota_System.UI.Availability import AvailabilitySelectionWidget
 from Rota_System.UI.Vacancies import VacanciesWidget
 from Rota_System.UI.Events import EventWidget
+from Rota_System.UI.Reports import ReportWidget
 
 
 class SingleDurationWidget(QtGui.QWidget):
@@ -20,7 +21,7 @@ class SingleDurationWidget(QtGui.QWidget):
         self.availabilityWidget = AvailabilitySelectionWidget(self)
         self.vacanciesWidget = VacanciesWidget(self)
         # self.errorsWidget = ErrorCheckingWidget.ErrorCheckingWidget(self)
-        # self.reportsWidget = ReportWidget.ReportWidget(self)
+        self.reportsWidget = ReportWidget(self)
 
         self.tabWidget.addTab(self.eventsWidget, "Events")
         self.addComandContributer(self.eventsWidget)
@@ -29,19 +30,21 @@ class SingleDurationWidget(QtGui.QWidget):
         self.tabWidget.addTab(self.vacanciesWidget, "Vacancies")
         self.addComandContributer(self.vacanciesWidget)
         # self.tabWidget.addTab(self.errorsWidget,"Error Checking")
-        # self.tabWidget.addTab(self.reportsWidget,"Reports")
+        self.tabWidget.addTab(self.reportsWidget,"Reports")
 
         self._population_model = None
 
-    def setPopulationModel(self, popModel):
-        self._population_model = popModel
+    def setPopulationModel(self, pop_model):
+        self._population_model = pop_model
         self.vacanciesWidget.populationModel(self._population_model)
+        self.reportsWidget.setPopulationModel(self._population_model)
 
     def setDuration(self, duration):
+        self._event_model = self.eventsWidget.duration(duration)
         if self._population_model:
-            self._event_model = self.eventsWidget.duration(duration)
             self.availabilityWidget.set_models(self._event_model, self._population_model)
-            self.vacanciesWidget.eventsModel(self._event_model)
+        self.vacanciesWidget.eventsModel(self._event_model)
+        self.reportsWidget.setEventsModel(self._event_model)
 
     @QtCore.pyqtSlot(QtGui.QUndoCommand)
     def emitCommand(self, command):

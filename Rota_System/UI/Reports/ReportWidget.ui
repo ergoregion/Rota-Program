@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>751</width>
+    <height>402</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="1" column="2">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="pushButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Produce reports</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="2">
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>250</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="headerHidden">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="0" column="2" colspan="2">
+    <widget class="QStackedWidget" name="stackedWidget"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>treeWidget</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>Form</receiver>
+   <slot>selectedTreeItem(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>429</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>476</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>produceReports()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>698</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>606</x>
+     <y>469</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>treeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>Form</receiver>
+   <slot>treeItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>206</x>
+     <y>416</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>283</x>
+     <y>485</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>selectedTreeItem(QTreeWidgetItem*,int)</slot>
+  <slot>produceReports()</slot>
+  <slot>treeItemChanged(QTreeWidgetItem*,int)</slot>
+ </slots>
+</ui>

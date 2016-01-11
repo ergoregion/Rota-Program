@@ -8,8 +8,8 @@ class EventReporter(object):
     def event(self, event):
         self._event = event
 
-    def report_about(self, anObject):
-        self.event(anObject)
+    def report_about(self, an_object):
+        self.event(an_object)
         return self.html().html_string()
 
     def html(self):
@@ -26,6 +26,8 @@ class EventReporter(object):
         title += date_string(self._event.date)
         title += '   '
         title += time_string(self._event.time)
+        title += '   '
+        title += self._event.title
         return HTMLObjects.HTMLHeading(title)
 
     def _html_table(self):
@@ -50,12 +52,12 @@ class EventReporter(object):
 
     def _html_table_row(self, appointment):
         html = HTMLObjects.HTMLTableRow()
-        if appointment.disabled and not (appointment.isFilled()):
+        if appointment.disabled and not (appointment.is_filled()):
             return None
         html.add(HTMLObjects.HTMLTableCell(appointment.role.description))
-        if appointment.isFilled():
+        if appointment.is_filled():
             html.add(HTMLObjects.HTMLTableCell(appointment.person.name))
-            html.add(HTMLObjects.HTMLTableCell(appointment.person.phoneNumber))
+            html.add(HTMLObjects.HTMLTableCell(appointment.person.phone_number))
             html.add(HTMLObjects.HTMLTableCell(appointment.person.email))
         else:
             html.add(HTMLObjects.HTMLTableCell('Not filled', 3, 1))

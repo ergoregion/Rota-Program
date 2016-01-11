@@ -40,7 +40,7 @@ class PersonReporter(AbstractMultiAppointmentReporter):
         html = HTMLObjects.HTMLTableRow()
         html.add(HTMLObjects.HTMLTableCell(date_string(appointment.date)))
         time = time_string(appointment.time)
-        event = str(appointment.event.description)
+        event = str(appointment.event.title)
         html.add(HTMLObjects.HTMLTableCell(time))
         html.add(HTMLObjects.HTMLTableCell(self._role_description(appointment)))
         html.add(HTMLObjects.HTMLTableCell(event))
@@ -59,5 +59,5 @@ class PersonReporter(AbstractMultiAppointmentReporter):
         html.add(HTMLObjects.HTMLTableHeaderCell('Date'))
         html.add(HTMLObjects.HTMLTableHeaderCell('Time'))
         html.add(HTMLObjects.HTMLTableHeaderCell('Role'))
-        html.add(HTMLObjects.HTMLTableHeaderCell('event'))
+        html.add(HTMLObjects.HTMLTableHeaderCell('Event'))
         return html
