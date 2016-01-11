@@ -60,8 +60,8 @@ class AppointmentsTreeListWidget(QtGui.QWidget):
     def eventsModel(self, eventModel):
         self._events = eventModel.events
         self._eventsModel = eventModel
-        self._refresh()
         self._refresh_connections()
+        self._refresh()
         eventModel.rowsInserted.connect(self._refresh_connections)
         eventModel.rowsRemoved.connect(self._refresh_connections)
         eventModel.rowsInserted.connect(self._refresh)

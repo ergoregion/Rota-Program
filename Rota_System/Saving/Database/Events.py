@@ -48,7 +48,7 @@ class MultipleEventsSavingObject(object):
             return None, event.title, event.notes, event.description, event.name, datetime.combine(date(0001, 01, 01),
                                                                                                    event.time), 1, 0
         else:
-            return None, event.title, event.notes, event.description, None, event.datetime, 0, durationIndex
+            return None, event.title, event.notes, event.description, None, event.datetime(), 0, durationIndex
 
     @staticmethod
     def appointmentTableTupple(appointment, eventIndex):
@@ -105,7 +105,7 @@ class MultipleEventsSavingObject(object):
                 appointmentsOfThisEvent = []
                 for row in _c.execute('SELECT * FROM Appointments WHERE event = ?', (row[0],)):
                     r = role(row[3])
-                    a = Appointment(e, r)
+                    a = Appointment(e, r, e)
                     a.note = row[1]
                     if row[2] == 1:
                         a.disabled = True

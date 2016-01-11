@@ -110,6 +110,8 @@ class EventPrototype(EventAbstract):
 
 
 class Event(EventAbstract):
+    dateChanged = pyqtSignal()
+
     def __init__(self, parent):
         EventAbstract.__init__(self, parent)
         self._datetime = datetime(2000,1,1,0,0,0)
@@ -127,7 +129,7 @@ class Event(EventAbstract):
         new_date_time = datetime.combine(value, self._datetime.time())
         self._datetime = new_date_time
         self.changed.emit(self)
-        self.timeChanged.emit()
+        self.dateChanged.emit()
 
     @property
     def time(self):
