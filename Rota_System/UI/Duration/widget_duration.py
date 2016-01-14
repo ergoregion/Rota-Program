@@ -5,6 +5,7 @@ from Rota_System.UI.Availability import AvailabilitySelectionWidget
 from Rota_System.UI.Vacancies import VacanciesWidget
 from Rota_System.UI.Events import EventWidget
 from Rota_System.UI.Reports import ReportWidget
+from Rota_System.UI.Checking import CheckingWidget
 
 
 class SingleDurationWidget(QtGui.QWidget):
@@ -20,7 +21,7 @@ class SingleDurationWidget(QtGui.QWidget):
         self.eventsWidget = EventWidget(self)
         self.availabilityWidget = AvailabilitySelectionWidget(self)
         self.vacanciesWidget = VacanciesWidget(self)
-        # self.errorsWidget = ErrorCheckingWidget.ErrorCheckingWidget(self)
+        self.checkingWidget = CheckingWidget(self)
         self.reportsWidget = ReportWidget(self)
 
         self.tabWidget.addTab(self.eventsWidget, "Events")
@@ -29,7 +30,7 @@ class SingleDurationWidget(QtGui.QWidget):
         self.addComandContributer(self.availabilityWidget)
         self.tabWidget.addTab(self.vacanciesWidget, "Vacancies")
         self.addComandContributer(self.vacanciesWidget)
-        # self.tabWidget.addTab(self.errorsWidget,"Error Checking")
+        self.tabWidget.addTab(self.checkingWidget,"Checking")
         self.tabWidget.addTab(self.reportsWidget,"Reports")
 
         self._population_model = None
@@ -37,6 +38,7 @@ class SingleDurationWidget(QtGui.QWidget):
     def setPopulationModel(self, pop_model):
         self._population_model = pop_model
         self.vacanciesWidget.populationModel(self._population_model)
+        self.checkingWidget.population(self._population_model.population)
         self.reportsWidget.setPopulationModel(self._population_model)
 
     def setDuration(self, duration):
@@ -45,6 +47,7 @@ class SingleDurationWidget(QtGui.QWidget):
             self.availabilityWidget.set_models(self._event_model, self._population_model)
         self.vacanciesWidget.eventsModel(self._event_model)
         self.reportsWidget.setEventsModel(self._event_model)
+        self.checkingWidget.duration(duration)
 
     @QtCore.pyqtSlot(QtGui.QUndoCommand)
     def emitCommand(self, command):
