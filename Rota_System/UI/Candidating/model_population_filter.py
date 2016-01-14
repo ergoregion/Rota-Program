@@ -32,7 +32,7 @@ class PopulationSortFilterModel(QtGui.QSortFilterProxyModel):
         self._antifilters.append(new_filter)
         self.invalidateFilter()
 
-    def filter_accepts_row(self, source_row, source_parent):
+    def filterAcceptsRow(self, source_row, source_parent):
         person = self.sourceModel().population[source_row]
         for f in self._filters:
             if f.mask(person):

@@ -20,10 +20,10 @@ class PersonFilterQualifiedForAppointment(object):
         self._appointment = appointment
 
     def transmit(self, person):
-        return person.suitableForRole(self._appointment.role)
+        return person.suitable_for_role(self._appointment.role)
 
     def mask(self, person):
-        return not person.suitableForRole(self._appointment.role)
+        return not person.suitable_for_role(self._appointment.role)
 
 
 class PersonFilterAvailableForAppointment(object):
@@ -31,10 +31,10 @@ class PersonFilterAvailableForAppointment(object):
         self._appointment = appointment
 
     def transmit(self, person):
-        return person.isAvailableOnDate(self._appointment.date)
+        return person.is_available_on_date(self._appointment.date)
 
     def mask(self, person):
-        return not person.isAvailableOnDate(self._appointment.date)
+        return not person.is_available_on_date(self._appointment.date)
 
 
 class PersonFilterHasClashingAppointmentInEvent(object):
@@ -44,7 +44,7 @@ class PersonFilterHasClashingAppointmentInEvent(object):
 
     def transmit(self, person):
         for a in self._event.appointments:
-            if a.person == person and not a.role.compatibleWith(self._role):
+            if a.person == person and not a.role.compatible_with(self._role):
                 return True
         return False
 
@@ -53,7 +53,7 @@ class PersonFilterHasClashingAppointmentInEvent(object):
 
     def appointments(self, person):
         return filter(self._event.appointments,
-                      key=lambda a: a.person == person and not a.role.compatibleWith(self._role))
+                      key=lambda a: a.person == person and not a.role.compatible_with(self._role))
 
 
 class PersonFilterHasAppointmentInEvent(object):
