@@ -41,11 +41,13 @@ class PersonFilterHasClashingAppointmentInEvent(object):
     def __init__(self, appointment):
         self._role = appointment.role
         self._event = appointment.event
+        self._appointment = appointment
 
     def transmit(self, person):
         for a in self._event.appointments:
-            if a.person == person and not a.role.compatible_with(self._role):
-                return True
+            if  a is not self._appointment:
+                if a.person == person and not a.role.compatible_with(self._role):
+                    return True
         return False
 
     def mask(self, person):

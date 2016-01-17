@@ -15,6 +15,7 @@ class CandidatesWidget(QtGui.QWidget):
 
         self.layout.addWidget(QtGui.QLabel('Candidates'), 0, 0, 1, 1)
         self._availableWidget = QtGui.QListView(self)
+        self._availableWidget.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
         self._availableModel = PopulationSortFilterModel(self._availableWidget)
         self._availableWidget.setModel(self._availableModel)
         self.layout.addWidget(self._availableWidget, 1, 0, 2, 1)
@@ -23,6 +24,7 @@ class CandidatesWidget(QtGui.QWidget):
 
         self.layout.addWidget(QtGui.QLabel('Otherwise Occupied'), 0, 1, 1, 1)
         self._qualifiedWidget = QtGui.QListView(self)
+        self._qualifiedWidget.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
         self._qualifiedWidget.setEnabled(False)
         self._qualifiedModel = PopulationSortFilterModel(self._qualifiedWidget)
         self._qualifiedWidget.setModel(self._qualifiedModel)
