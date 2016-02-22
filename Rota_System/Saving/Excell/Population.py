@@ -7,6 +7,10 @@ from datetime import datetime
 from Rota_System.Worker import Worker
 
 
+def name(an_object):
+    return an_object.name
+
+
 class PopulationSavingObject(object):
     def __init__(self, population, filename):
         if filename:
@@ -125,7 +129,10 @@ class PopulationSavingObject(object):
                 p.address = self._population_sheet.cell_value(i, 3)
                 self._get_qualifications(i, p)
                 self._get_dates(i, p)
-                self._population.append(p)
+                if p.name in map(name, self._population):
+                    raise ExcellImportExportError('There were people with the same name : ' + p.name)
+                else:
+                    self._population.append(p)
 
     def _get_qualifications(self, row, person):
         cells = self._qualifications_sheet.row(row)
