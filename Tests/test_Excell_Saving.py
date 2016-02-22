@@ -2,7 +2,7 @@ __author__ = 'Neil Butcher'
 
 import unittest
 from Rota_System.Institution import Institution
-from Rota_System.Saving.Excell import PopulationSavingObject
+from Rota_System.Saving.Excell import PopulationSavingObject, ExcellImportExportError
 from Rota_System.Roles import GlobalRoleList, Role
 from Rota_System.Worker import Worker
 from datetime import date
@@ -133,3 +133,15 @@ class Test(unittest.TestCase):
         self.assertTrue(loaded_person.suitable_for_role('D'))
         self.assertTrue(loaded_person.suitable_for_role('G'))
         self.assertFalse(loaded_person.suitable_for_role('N'))
+
+
+    def testInvalidLoadPopulation(self):
+        GlobalRoleList.clear()
+        GlobalRoleList.add_role(Role('Doctor', 'D', 10))
+        GlobalRoleList.add_role(Role('GP', 'G', 8))
+        GlobalRoleList.add_role(Role('Nurse', 'N', 10))
+        GlobalRoleList.add_role(Role('Cook', 'C', 7))
+        GlobalRoleList.add_role(Role('Reception', 'R', 5))
+
+        loader = PopulationSavingObject([], 'test_invalid_population_sheet.xls')
+        self.assertRaises(ExcellImportExportError,loader.load)
