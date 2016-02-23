@@ -60,7 +60,7 @@ class DurationSavingObject(object):
             event_jobs = map(_job, e.appointments)
             for e_j in event_jobs:
                 d = e_j[0]
-                if not self._jobs.has_key(d):
+                if d not in self._jobs:
                     self._jobs[d] = []
                 if self._jobs[d].count(e_j) < event_jobs.count(e_j):
                     self._jobs[d].append(e_j)
@@ -106,12 +106,11 @@ class DurationSavingObject(object):
         self._get_events()
         return self._duration.events
 
-    def load(self,population=[]):
+    def load(self, population=[]):
         self._book = xlrd.open_workbook(self._filename)
         self._get_sheets()
         self._fill_appointments(population)
         return self._duration
-
 
     def _get_sheets(self, just_events=False):
         names = self._book.sheet_names()
@@ -157,7 +156,6 @@ class DurationSavingObject(object):
             event.date = get_date(e['date'])
             event.time = get_time(e['time'])
             self._duration.events.append(event)
-
 
     def _get_events_order(self):
 
@@ -205,24 +203,26 @@ class DurationSavingObject(object):
 
         ordered_events = self._get_events_order()
 
-
         for r in GlobalRoleList.roles:
             sheet = self._vacancies_sheets[r.description]
-            for ei,event in enumerate(ordered_events):
-                row_index = ei+2
+            for ei, event in enumerate(ordered_events):
+                row_index = ei + 2
                 row = sheet.row(row_index)
-                appointments =  [a for a in event.appointments if a.role is r]
-                cell_entries = [(sheet.cell_value(1,i),sheet.cell_value(row_index,i)) for i in range(1,len(row)) if sheet.cell_type(row_index,i) is not 0]
+                appointments = [a for a in event.appointments if a.role is r]
+                cell_entries = [(sheet.cell_value(1, i), sheet.cell_value(row_index, i)) for i in range(1, len(row)) if
+                                sheet.cell_type(row_index, i) is not 0]
 
                 for c in cell_entries:
-                    noted_filled_appointments = [a for a in appointments if a.note == c[0] and not a.disabled and a.is_filled()]
+                    noted_filled_appointments = [a for a in appointments if
+                                                 a.note == c[0] and not a.disabled and a.is_filled()]
                     noted_disabled_appointments = [a for a in appointments if a.note == c[0] and a.disabled]
-                    noted_vacant_appointments = [a for a in appointments if a.note == c[0] and not a.disabled and not a.is_filled()]
+                    noted_vacant_appointments = [a for a in appointments if
+                                                 a.note == c[0] and not a.disabled and not a.is_filled()]
 
                     if c[1] == 'Disabled':
-                        if len(noted_disabled_appointments)>0:
+                        if len(noted_disabled_appointments) > 0:
                             appointments.remove(noted_disabled_appointments[0])
-                        elif len(noted_vacant_appointments)>0:
+                        elif len(noted_vacant_appointments) > 0:
                             noted_vacant_appointments[0].disabled = True
                             appointments.remove(noted_vacant_appointments[0])
                         else:
@@ -230,7 +230,6 @@ class DurationSavingObject(object):
                     else:
                         name = c[1]
                         people = [p for p in population if p.name == name]
-                        person = None
                         if len(people) > 1:
                             raise ExcellImportExportError('There are multiple people with the name ' + name)
                         elif len(people) == 0:
@@ -239,15 +238,10 @@ class DurationSavingObject(object):
                             person = people[0]
 
                         ready_filled_appointments = [a for a in noted_filled_appointments if a.person is person]
-                        if len(ready_filled_appointments)>0:
+                        if len(ready_filled_appointments) > 0:
                             appointments.remove(ready_filled_appointments[0])
-                        elif len(noted_vacant_appointments)>0:
+                        elif len(noted_vacant_appointments) > 0:
                             noted_vacant_appointments[0].appoint(person)
                             appointments.remove(noted_vacant_appointments[0])
                         else:
                             raise ExcellImportExportError('There is no vacant appointment to fill')
-
-
-
-
-
