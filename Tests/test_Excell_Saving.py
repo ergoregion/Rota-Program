@@ -2,10 +2,13 @@ __author__ = 'Neil Butcher'
 
 import unittest
 from Rota_System.Institution import Institution
-from Rota_System.Saving.Excell import PopulationSavingObject, ExcellImportExportError
-from Rota_System.Roles import GlobalRoleList, Role
+from Rota_System.Duration import Duration
+from Rota_System.Events import Event, Appointment
+from Rota_System.Saving.Excell import PopulationSavingObject, DurationSavingObject, ExcellImportExportError
+from Rota_System.Roles import GlobalRoleList, Role, role
 from Rota_System.Worker import Worker
 from datetime import date
+import os
 
 
 def new_worker():
@@ -32,6 +35,28 @@ class Test(unittest.TestCase):
         GlobalRoleList.add_role(Role('Fisherman', 'F', 7))
         GlobalRoleList.add_role(Role('Cook', 'C', 7))
         self.institution = Institution()
+        self.duration = Duration(self.institution)
+
+        e = Event(self.duration)
+        e.title = 'A'
+        e.add_appointment(Appointment(e, role("C"), e))
+        e.add_appointment(Appointment(e, role("S"), e))
+        e.appointments[1].note = 'with car'
+        e.add_appointment(Appointment(e, role("F"), e))
+        e.add_appointment(Appointment(e, role("F"), e))
+        e.appointments[3].disabled = True
+        e.add_appointment(Appointment(e, role("F"), e))
+        self.duration.events.append(e)
+
+        e = Event(self.duration)
+        e.title = 'B'
+        e.add_appointment(Appointment(e, role("F"), e))
+        e.add_appointment(Appointment(e, role("F"), e))
+        e.appointments[1].note = 'with car'
+        e.add_appointment(Appointment(e, role("S"), e))
+        e.appointments[2].note = 'with car'
+        e.add_appointment(Appointment(e, role("B"), e))
+        self.duration.events.append(e)
 
     def tearDown(self):
         GlobalRoleList.clear()
@@ -134,7 +159,6 @@ class Test(unittest.TestCase):
         self.assertTrue(loaded_person.suitable_for_role('G'))
         self.assertFalse(loaded_person.suitable_for_role('N'))
 
-
     def testInvalidLoadPopulation(self):
         GlobalRoleList.clear()
         GlobalRoleList.add_role(Role('Doctor', 'D', 10))
@@ -144,4 +168,69 @@ class Test(unittest.TestCase):
         GlobalRoleList.add_role(Role('Reception', 'R', 5))
 
         loader = PopulationSavingObject([], 'test_invalid_population_sheet.xls')
-        self.assertRaises(ExcellImportExportError,loader.load)
+        self.assertRaises(ExcellImportExportError, loader.load)
+
+    def testDurationCreation(self):
+        saver = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        saver.create()
+        saver.populate()
+
+    def testDurationPopulation(self):
+        bob = new_worker()
+        self.duration.events[1].appointments[2].appoint(bob)
+        saver = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        saver.create()
+        saver.populate()
+
+    def testDurationEventsLoading(self):
+        saver = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        saver.create()
+        saver.populate()
+        loader = DurationSavingObject(Duration(self.institution),'temp_sheet.xls')
+        events = loader.load_events()
+        self.assertEqual(len(events), len(self.duration.events))
+        self.assertEqual(events[0].title, self.duration.events[0].title)
+        self.assertEqual(events[1].time, self.duration.events[1].time)
+        self.assertEqual(events[0].date, self.duration.events[0].date)
+
+    def testDurationDisabledAppointmentLoading(self):
+        saver = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        saver.create()
+        saver.populate()
+        for a in self.duration.appointments():
+            a.disabled = False
+        disabled_appointments = [a for a in self.duration.appointments() if a.disabled]
+        self.assertTrue(len(disabled_appointments) == 0)
+        loader = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        loader.load()
+        disabled_appointments = [a for a in self.duration.appointments() if a.disabled]
+        self.assertFalse(len(disabled_appointments) == 0)
+
+
+    def testDurationFilledAppointmentLoading(self):
+        bob = new_worker()
+        key_appointment = self.duration.events[1].appointments[2]
+        key_appointment.appoint(bob)
+        self.assertTrue(key_appointment.is_filled())
+        saver = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        saver.create()
+        saver.populate()
+        key_appointment.vacate()
+        self.assertFalse(key_appointment.is_filled())
+        loader = DurationSavingObject(self.duration, 'temp_sheet.xls')
+        loader.load([bob])
+        self.assertTrue(key_appointment.is_filled())
+
+    def testAppointmentLoading(self):
+        bob = new_worker()
+        filled_appointments = [a for a in self.duration.appointments() if a.is_filled()]
+        self.assertTrue(len(filled_appointments) == 0)
+        loader = DurationSavingObject(self.duration, 'test_appointing_sheet.xls')
+        loader.load([bob])
+        filled_appointments = [a for a in self.duration.appointments() if a.is_filled()]
+        self.assertEqual(len(filled_appointments),3)
+
+    def testInvalidAppointmentLoading(self):
+        bob = new_worker()
+        loader = DurationSavingObject(self.duration, 'test_invalid_appointing_sheet.xls')
+        self.assertRaises(ExcellImportExportError, loader.load, [bob])

@@ -3,8 +3,8 @@ __author__ = 'Neil Butcher'
 from Error import ExcellImportExportError
 import xlwt, xlrd
 from Rota_System.Roles import GlobalRoleList, role
-from datetime import datetime
 from Rota_System.Worker import Worker
+from Rota_System.StandardTimes import date_string, get_date
 
 
 def name(an_object):
@@ -60,7 +60,7 @@ class PopulationSavingObject(object):
 
         j = 1
         for d in person.blacklisted_dates():
-            self._dates_sheet.write(row, j, str(d))
+            self._dates_sheet.write(row, j, date_string(d))
             j += 1
 
     def populate(self):
@@ -160,6 +160,3 @@ class PopulationSavingObject(object):
             if cells[i].ctype is not 0:
                 person.blacklist_date(get_date(cells[i].value))
 
-
-def get_date(a_string):
-    return (datetime.strptime(a_string, "%Y-%m-%d")).date()

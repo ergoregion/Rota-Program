@@ -1,6 +1,6 @@
 __author__ = 'Neil Butcher'
 
-from datetime import time
+from datetime import time, date, datetime
 
 
 StandardEventTimes = []
@@ -17,3 +17,13 @@ def time_string(a_time):
 
 def date_string(a_date):
     return a_date.strftime("%d. %B %Y")
+
+def get_time(a_string):
+    for seTime in StandardEventTimes:
+        if a_string == seTime[0]:
+            return seTime[1]
+    return (time.strptime(a_string, "%H:%M")).time()
+
+
+def get_date(a_string):
+    return (datetime.strptime(a_string, "%d. %B %Y")).date()
