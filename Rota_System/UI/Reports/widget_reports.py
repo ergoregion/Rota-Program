@@ -6,6 +6,7 @@ from Rota_System.Roles import GlobalRoleList
 from Rota_System import Reporting
 from Rota_System.StandardTimes import date_string
 from widget_webview import WebView
+from Rota_System.Reporting.LinkedBulkReport import DurationReporter
 
 
 class ReportWidget(QtGui.QWidget):
@@ -106,6 +107,7 @@ class ReportWidget(QtGui.QWidget):
 
     def setPopulationModel(self, population_model):
         self._people = population_model.population
+        self._institution = population_model.institution
         self._refresh_people_children()
         population_model.dataChanged.connect(self._refresh_people_children)
         population_model.rowsInserted.connect(self._refresh_people_children)
@@ -116,6 +118,7 @@ class ReportWidget(QtGui.QWidget):
         self._roleReporter.events(event_model.events)
         self._personReporter.events(event_model.events)
         self._refresh_events_children()
+        self._duration = event_model.duration
         event_model.dataChanged.connect(self._refresh_events_children)
         event_model.rowsInserted.connect(self._refresh_events_children)
         event_model.rowsRemoved.connect(self._refresh_events_children)
@@ -134,6 +137,11 @@ class ReportWidget(QtGui.QWidget):
 
     @QtCore.pyqtSlot()
     def produceReports(self):
+        folder = QtGui.QFileDialog.getExistingDirectory(self, 'Choose output folder')
+        DurationReporter().write_reports_about(self._institution, self._duration, str(folder))
+
+    @QtCore.pyqtSlot()
+    def produceSelectedReports(self):
         items = self._all_checked_tree_reports()
         if len(items) == 0: return None
         folder = QtGui.QFileDialog.getExistingDirectory(self, 'Choose output folder')

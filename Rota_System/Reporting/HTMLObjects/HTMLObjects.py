@@ -159,3 +159,21 @@ class HTMLList(_HTMLObject):
 
     def new_line(self):
         return True
+
+
+class HTMLLink(_HTMLObject):
+
+    def __init__(self, text, link):
+        _HTMLObject.__init__(self)
+        self.elements = []
+        self.link = link
+        self.add(text)
+
+    def code(self):
+        return 'a'
+
+    def attributes(self):
+        s = 'href="'
+        s += self.link
+        s += '"'
+        return [s]

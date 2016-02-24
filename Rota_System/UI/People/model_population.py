@@ -10,6 +10,7 @@ class PopulationModel(QtCore.QAbstractListModel):
 
     def __init__(self, parent):
         QtCore.QAbstractItemModel.__init__(self, parent)
+        self.institution = parent
         self.population = parent.people
         for p in self.population:
             p.nameChanged.connect(self.person_name_changed)
