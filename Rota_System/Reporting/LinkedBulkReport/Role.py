@@ -1,7 +1,7 @@
 __author__ = 'Neil Butcher'
 
 from Rota_System.Reporting.HTMLObjects import HTMLObjects
-from Abstract import AbstractMultiAppointmentReporter, event_title
+from Abstract import AbstractMultiAppointmentReporter, event_title, person_code
 from Rota_System.StandardTimes import time_string, date_string
 
 
@@ -91,7 +91,7 @@ class RoleReporter(AbstractMultiAppointmentReporter):
 
 def person_name(an_object):
     if an_object.is_filled():
-        link = HTMLObjects.HTMLLink(an_object.person.name, "../people/" + an_object.person.name + ".html")
+        link = HTMLObjects.HTMLLink(person_code(an_object.person), "../people/" + person_code(an_object.person) + ".html")
         return link.html_string()
     else:
         return 'Not filled'

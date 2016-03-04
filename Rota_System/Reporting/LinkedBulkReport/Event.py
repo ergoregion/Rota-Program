@@ -1,7 +1,7 @@
 __author__ = 'Neil Butcher'
 
 from Rota_System.Reporting.HTMLObjects import HTMLObjects
-from Abstract import event_title
+from Abstract import event_title, person_code
 from Rota_System.StandardTimes import date_string, time_string
 
 
@@ -84,8 +84,6 @@ class EventReporter(object):
         html = HTMLObjects.HTMLTableRow()
         html.add(HTMLObjects.HTMLTableHeaderCell('Role'))
         html.add(HTMLObjects.HTMLTableHeaderCell('Person'))
-        html.add(HTMLObjects.HTMLTableHeaderCell('Phone Number'))
-        html.add(HTMLObjects.HTMLTableHeaderCell('email'))
         html.add(HTMLObjects.HTMLTableHeaderCell('note'))
         return html
 
@@ -96,10 +94,8 @@ class EventReporter(object):
         link =  HTMLObjects.HTMLLink(appointment.role.description, "../roles/" + appointment.role.description + ".html")
         html.add(HTMLObjects.HTMLTableCell(link))
         if appointment.is_filled():
-            link =  HTMLObjects.HTMLLink(appointment.person.name, "../people/" + appointment.person.name + ".html")
+            link =  HTMLObjects.HTMLLink(person_code(appointment.person), "../people/" + person_code(appointment.person) + ".html")
             html.add(HTMLObjects.HTMLTableCell(link))
-            html.add(HTMLObjects.HTMLTableCell(appointment.person.phone_number))
-            html.add(HTMLObjects.HTMLTableCell(appointment.person.email))
         else:
             html.add(HTMLObjects.HTMLTableCell('Not filled', 3, 1))
         html.add(HTMLObjects.HTMLTableCell(appointment.note))

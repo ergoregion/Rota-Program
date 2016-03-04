@@ -3,7 +3,7 @@ __author__ = 'Neil Butcher'
 from Rota_System.Reporting.HTMLObjects import HTMLObjects
 from datetime import datetime
 from Rota_System.StandardTimes import date_string, time_string
-from Abstract import AbstractMultiAppointmentReporter, event_title
+from Abstract import AbstractMultiAppointmentReporter, event_title, person_code
 
 
 class PopulationReporter(object):
@@ -17,7 +17,7 @@ class PopulationReporter(object):
         self._write_index_file(a_list, a_folder)
         for person in a_list:
             html = self._reporter.report_about(person)
-            filename = a_folder + '\\' + person.name + '.html'
+            filename = a_folder + '\\' + person_code(person) + '.html'
             fileopen = open(filename, 'w')
             fileopen.write(html.html_string())
             fileopen.close()
@@ -26,7 +26,7 @@ class PopulationReporter(object):
 
         table = HTMLObjects.HTMLTable()
         for person in a_list:
-            text = HTMLObjects.HTMLLink(person.name, "./" + person.name + ".html")
+            text = HTMLObjects.HTMLLink(person_code(person), "./" + person_code(person) + ".html")
             cell = HTMLObjects.HTMLTableCell(text)
             row = HTMLObjects.HTMLTableRow(cell)
             table.add(row)
@@ -65,7 +65,7 @@ class PersonReporter(AbstractMultiAppointmentReporter):
         return HTMLObjects.HTMLLink("people", "./index.html")
 
     def _html_header(self):
-        return HTMLObjects.HTMLTitle(self._person.name)
+        return HTMLObjects.HTMLTitle(person_code(self._person))
 
     def _html_table(self):
         table = HTMLObjects.HTMLTable(self._html_table_header_row())

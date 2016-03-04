@@ -57,3 +57,11 @@ class AbstractMultiAppointmentReporter(object):
 
     def _times(self):
         return sorted(set(map(time, self._all_appointments)))
+
+def first_2_letters(word):
+    return word[:2]
+
+def person_code(aPerson):
+    words = aPerson.name.split()
+    return ''.join(map(first_2_letters, words))
+
