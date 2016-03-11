@@ -24,7 +24,7 @@ class RolesReporter(object):
     def _write_index_file(self, a_list, a_folder):
 
         table = HTMLObjects.HTMLTable()
-        for role in a_list:
+        for role in sorted(a_list, key=lambda r: r.description):
             text = HTMLObjects.HTMLLink(role.description, "./" + role.description + ".html")
             cell = HTMLObjects.HTMLTableCell(text)
             row = HTMLObjects.HTMLTableRow(cell)
@@ -74,18 +74,19 @@ class RoleReporter(AbstractMultiAppointmentReporter):
         row.add(HTMLObjects.HTMLTableHeaderCell("People"))
         table.add(row)
         for e in sorted(self._events, key=lambda e: e.datetime()):
-            link = HTMLObjects.HTMLLink(e.title, "../events/" + event_title(e) + ".html")
-            row = HTMLObjects.HTMLTableRow(HTMLObjects.HTMLTableHeaderCell(date_string(e.date)))
-            row.add(HTMLObjects.HTMLTableHeaderCell(time_string(e.time)))
-            row.add(HTMLObjects.HTMLTableHeaderCell(link))
             correct_appointments = [a for a in self._all_appointments if e is a.event]
-            names = map(person_name, correct_appointments)
-            if len(names) > 0:
-                string = '<br>'.join(names)
-            else:
-                string = ''
-            row.add(HTMLObjects.HTMLTableCell(string))
-            table.add(row)
+            if len(correct_appointments) > 0:
+                link = HTMLObjects.HTMLLink(e.title, "../events/" + event_title(e) + ".html")
+                row = HTMLObjects.HTMLTableRow(HTMLObjects.HTMLTableHeaderCell(date_string(e.date)))
+                row.add(HTMLObjects.HTMLTableHeaderCell(time_string(e.time)))
+                row.add(HTMLObjects.HTMLTableHeaderCell(link))
+                names = map(person_name, correct_appointments)
+                if len(names) > 0:
+                    string = '<br>'.join(names)
+                else:
+                    string = ''
+                row.add(HTMLObjects.HTMLTableCell(string))
+                table.add(row)
         return table
 
 

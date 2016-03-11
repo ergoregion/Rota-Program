@@ -12,7 +12,7 @@ class EventsReporter(object):
         self._reporter = EventReporter()
 
         titles = []
-        for event in a_list:
+        for event in sorted(a_list, key=lambda e: e.datetime()):
             html = self._reporter.report_about(event)
             et = event_title(event)
             filename = a_folder + '\\' + et + '.html'
@@ -25,7 +25,7 @@ class EventsReporter(object):
     def _write_index_file(self, a_list, a_folder):
 
         table = HTMLObjects.HTMLTable()
-        for event_title in a_list :
+        for event_title in  a_list:
             text = HTMLObjects.HTMLLink(event_title, "./" + event_title + ".html")
             cell = HTMLObjects.HTMLTableCell(text)
             row = HTMLObjects.HTMLTableRow(cell)

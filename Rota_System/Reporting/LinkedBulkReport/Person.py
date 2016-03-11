@@ -15,7 +15,7 @@ class PopulationReporter(object):
         if not self._reporter.events:
             return HTMLObjects.HTMLNone()
         self._write_index_file(a_list, a_folder)
-        for person in a_list:
+        for person in sorted(a_list, key=lambda p: person_code(p)):
             html = self._reporter.report_about(person)
             filename = a_folder + '\\' + person_code(person) + '.html'
             fileopen = open(filename, 'w')
