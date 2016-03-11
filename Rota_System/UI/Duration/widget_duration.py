@@ -34,6 +34,7 @@ class SingleDurationWidget(QtGui.QWidget):
         self.tabWidget.addTab(self.reportsWidget,"Reports")
 
         self._population_model = None
+        self.duration = None
 
     def setPopulationModel(self, pop_model):
         self._population_model = pop_model
@@ -42,6 +43,7 @@ class SingleDurationWidget(QtGui.QWidget):
         self.reportsWidget.setPopulationModel(self._population_model)
 
     def setDuration(self, duration):
+        self.duration = duration
         self._event_model = self.eventsWidget.duration(duration)
         if self._population_model:
             self.availabilityWidget.set_models(self._event_model, self._population_model)
