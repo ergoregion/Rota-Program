@@ -90,3 +90,6 @@ class AppointmentPrototype(AppointmentAbstract):
 
     def vacate(self):
         pass
+
+    def is_filled(self):
+        return False

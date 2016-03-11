@@ -1,7 +1,7 @@
 __author__ = 'Neil Butcher'
 
 import sqlite3
-from Rota_System.Appointments import Appointment
+from Rota_System.Appointments import Appointment, AppointmentPrototype
 from Rota_System.Events import Event, EventPrototype
 from datetime import datetime, date
 from Rota_System.Roles import role
@@ -57,7 +57,7 @@ class MultipleEventsSavingObject(object):
         else:
             disabledIndex = 0
 
-        if appointment.person:
+        if appointment.is_filled():
             personText = appointment.person.name
         else:
             personText = ''
@@ -105,7 +105,10 @@ class MultipleEventsSavingObject(object):
                 appointmentsOfThisEvent = []
                 for row in _c.execute('SELECT * FROM Appointments WHERE event = ?', (row[0],)):
                     r = role(row[3])
-                    a = Appointment(e, r, e)
+                    if durationIndex:
+                        a = Appointment(e, r, e)
+                    else:
+                        a = AppointmentPrototype(e,r)
                     a.note = row[1]
                     if row[2] == 1:
                         a.disabled = True
